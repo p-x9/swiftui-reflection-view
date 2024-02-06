@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "swift-magic-mirror",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/p-x9/swift-magic-mirror.git",
+      "state" : {
+        "revision" : "38735008508388fff40bff3ba690174e779ece7c",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swiftuicolor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/p-x9/SwiftUIColor.git",
+      "state" : {
+        "revision" : "aa42f452698cc0f78dcba2c6544f4abf7724602f",
+        "version" : "0.4.0"
+      }
+    }
+  ],
+  "version" : 2
+}

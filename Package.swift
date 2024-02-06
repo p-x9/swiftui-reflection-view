@@ -10,9 +10,17 @@ let package = Package(
             targets: ["ReflectionView"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/p-x9/SwiftUIColor.git", from: "0.4.0"),
+        .package(url: "https://github.com/p-x9/swift-magic-mirror.git", from: "0.1.0")
+    ],
     targets: [
         .target(
-            name: "ReflectionView"
+            name: "ReflectionView",
+            dependencies: [
+                .product(name: "SwiftUIColor", package: "SwiftUIColor"),
+                .product(name: "MagicMirror", package: "swift-magic-mirror")
+            ]
         ),
         .testTarget(
             name: "ReflectionViewTests",
