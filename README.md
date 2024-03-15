@@ -11,9 +11,9 @@ SwiftUI View to display property information based on Swift's reflection API for
 
 ## Demo
 
-|  A  |  B  |  C  |
+|  A  |  B  | C |
 | ---- | ---- | ---- |
-|  <img width="210" alt="B" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/77fec3e6-f0fb-4180-8359-f0169c8d1b31">  |  <img width="210" alt="A" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/1543d50a-0582-4bea-98ae-445bb46e8bc0">  |  <img width="210" alt="C" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/aaae4f01-d656-42fd-99ff-ee84194b464e"> |
+| <img width="308" alt="A" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/fc0a82e7-7090-4dfb-bb62-7add7bccd30e"> | <img width="308" alt="B" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/115a6207-e0d4-4016-a6c7-a9549074de31"> | <img width="308" alt="C" src="https://github.com/p-x9/swiftui-reflection-view/assets/50244599/06402244-687e-43c6-91de-cbdda9531fde"> |
 
 ## Usage
 
