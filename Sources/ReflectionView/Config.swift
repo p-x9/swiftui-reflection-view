@@ -10,10 +10,22 @@ import Foundation
 import SwiftUI
 
 public struct Config {
-    let keywordColor: Color
-    let stringColor: Color
-    let numberColor: Color
-    let typeColor: Color
+    public var keywordColor: Color
+    public var stringColor: Color
+    public var numberColor: Color
+    public var typeColor: Color
+
+    public init(
+        keywordColor: Color,
+        stringColor: Color,
+        numberColor: Color,
+        typeColor: Color
+    ) {
+        self.keywordColor = keywordColor
+        self.stringColor = stringColor
+        self.numberColor = numberColor
+        self.typeColor = typeColor
+    }
 }
 
 extension Config {
