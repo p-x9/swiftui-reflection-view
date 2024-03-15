@@ -14,6 +14,8 @@ struct ReflectionContentView: View {
     let element: Reflection.Element
     @Environment(\.reflectionViewConfig) var config
 
+    let itemLimitForExpansion = 5
+
     init(_ element: Reflection.Element) {
         self.element = element
     }
@@ -38,25 +40,60 @@ struct ReflectionContentView: View {
                 .foregroundColor(config.keywordColor)
 
         case let .list(elements):
-            ListContent(type: nil, key: nil, elements)
+            ListContent(
+                type: nil,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .nested(elements):
-            NestedContent(type: nil, key: nil, elements)
+            NestedContent(
+                type: nil,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .keyed(key, element: .list(elements)):
-            ListContent(type: nil, key: key, elements)
+            ListContent(
+                type: nil,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .keyed(key, element: .nested(elements)):
-            NestedContent(type: nil, key: key, elements)
+            NestedContent(
+                type: nil,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .keyed(key, element: .typed(type, .nested(elements))):
-            NestedContent(type: type, key: key, elements)
+            NestedContent(
+                type: type,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .typed(type, element: .nested(elements)):
-            NestedContent(type: type, key: nil, elements)
+            NestedContent(
+                type: type,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .typed(type, element: .list(elements)):
-            ListContent(type: type, key: nil, elements)
+            ListContent(
+                type: type,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
 
         case let .typed(type, element):
             TypedContent(type) {

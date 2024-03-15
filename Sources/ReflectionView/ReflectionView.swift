@@ -18,8 +18,6 @@ public struct ReflectionView: View {
             ReflectionContentView(structured)
         }
         .padding()
-        .background(Color.iOS(.secondarySystemFill))
-        .cornerRadius(8)
     }
 }
 
