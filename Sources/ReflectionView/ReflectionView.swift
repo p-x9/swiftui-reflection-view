@@ -1,25 +1,23 @@
 import SwiftUI
 import SwiftUIColor
+import Reflection
 
 public struct ReflectionView: View {
     let reflection: Reflection
 
     @Environment(\.font) var font
+    @Environment(\.reflectionViewConfig) var config
 
     public init(_ value: Any) {
         self.reflection = .init(value)
     }
 
     public var body: some View {
+        let structured = reflection.structured
         HStack {
-            Text(reflection.description)
-                .font(font ?? .system(size: 14, weight: .bold, design: .monospaced))
-                .foregroundColor(.gray)
-            Spacer()
+            ReflectionContentView(structured)
         }
         .padding()
-        .background(Color.iOS(.secondarySystemFill))
-        .cornerRadius(8)
     }
 }
 

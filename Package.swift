@@ -20,15 +20,28 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "Reflection",
+            dependencies: [
+                .product(name: "MagicMirror", package: "swift-magic-mirror")
+            ]
+        ),
+        .target(
             name: "ReflectionView",
             dependencies: [
+                "Reflection",
                 .product(name: "SwiftUIColor", package: "SwiftUIColor"),
                 .product(name: "MagicMirror", package: "swift-magic-mirror")
+            ],
+            resources: [
+                .process("Assets")
             ]
         ),
         .testTarget(
             name: "ReflectionViewTests",
-            dependencies: ["ReflectionView"]
+            dependencies: [
+                "Reflection",
+                "ReflectionView"
+            ]
         ),
     ]
 )
