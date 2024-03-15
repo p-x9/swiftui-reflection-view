@@ -22,7 +22,7 @@ struct ListContent: View {
         self.type = type
         self.key = key
         self.elements = elements
-        self.isExpanded = isExpanded
+        self._isExpanded = .init(initialValue: isExpanded)
     }
 
     var body: some View {
