@@ -42,6 +42,7 @@ struct NestedContent: View {
                     if !isExpanded {
                         Text("...")
                             .background(Color.universal(.systemGray).opacity(0.3))
+                            .cornerRadius(3.0)
                         rightBrace
                         ItemCountLabel(elements.count)
                     }

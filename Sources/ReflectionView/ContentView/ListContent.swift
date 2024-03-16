@@ -42,6 +42,7 @@ struct ListContent: View {
                     if !isExpanded {
                         Text("...")
                             .background(Color.universal(.systemGray).opacity(0.3))
+                            .cornerRadius(3.0)
                         rightSquare
                         ItemCountLabel(elements.count)
                     }
