@@ -14,12 +14,14 @@ public struct Config {
     public var stringColor: Color
     public var numberColor: Color
     public var typeColor: Color
+    public var itemLimitForExpansion = 5
 
     public init(
         keywordColor: Color,
         stringColor: Color,
         numberColor: Color,
-        typeColor: Color
+        typeColor: Color,
+        itemLimitForExpansion: Int = 5
     ) {
         self.keywordColor = keywordColor
         self.stringColor = stringColor
