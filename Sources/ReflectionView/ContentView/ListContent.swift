@@ -43,9 +43,7 @@ struct ListContent: View {
                         Text("...")
                             .background(Color.universal(.systemGray).opacity(0.3))
                         rightSquare
-                        Text("\(elements.count) items")
-                            .foregroundColor(.universal(.systemGray))
-                            .scaleEffect(0.8)
+                        ItemCountLabel(elements.count)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
