@@ -14,7 +14,8 @@ struct ReflectionContentView: View {
     let element: Reflection.Element
     @Environment(\.reflectionViewConfig) var config
 
-    let itemLimitForExpansion = 5
+    @Environment(\.reflectionViewConfig.itemLimitForExpansion)
+    var itemLimitForExpansion
 
     init(_ element: Reflection.Element) {
         self.element = element
@@ -99,6 +100,7 @@ struct ReflectionContentView: View {
             TypedContent(type) {
                 ReflectionContentView(element)
             }
+
         case let .keyed(key, element):
             KeyedContent(key) {
                 ReflectionContentView(element)
