@@ -48,6 +48,14 @@ struct ReflectionContentView: View {
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
+        case let .dict(elements):
+            DictContent(
+                type: nil,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
         case let .nested(elements):
             NestedContent(
                 type: nil,
@@ -58,6 +66,14 @@ struct ReflectionContentView: View {
 
         case let .keyed(key, element: .list(elements)):
             ListContent(
+                type: nil,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .dict(elements)):
+            DictContent(
                 type: nil,
                 key: key,
                 elements,
@@ -90,6 +106,14 @@ struct ReflectionContentView: View {
 
         case let .typed(type, element: .list(elements)):
             ListContent(
+                type: type,
+                key: nil,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .typed(type, element: .dict(elements)):
+            DictContent(
                 type: type,
                 key: nil,
                 elements,
