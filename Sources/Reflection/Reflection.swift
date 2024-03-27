@@ -37,6 +37,7 @@ extension Reflection {
         case bool(Bool)
 
         case list([Element])
+        case dict([(Element, Element)])
         case nested([Element])
 
         case typed(type: String, element: Element)
@@ -66,6 +67,14 @@ extension Reflection.Element: CustomStringConvertible {
             return """
             [
             \(elements.map({ $0.description.tabbed(tabWidth) }).joined(separator: "\n"))
+            ]
+            """
+
+        case let .dict(elements):
+            if elements.isEmpty { return "[:]" }
+            return """
+            [
+            \(elements.map({ $0.0.description.tabbed(tabWidth) + ":\n" + $0.1.description.tabbed(2 * tabWidth) }).joined(separator: "\n"))
             ]
             """
 
@@ -100,6 +109,16 @@ extension Reflection {
             element = .string(v)
         case let v as Bool:
             element = .bool(v)
+        case let v as Dictionary<AnyHashable, Any>:
+            let elements =  v.map {
+                (Reflection($0.key).parse(), Reflection($0.value).parse())
+            }
+            element = .dict(elements)
+        case let v as Array<Any>:
+            let elements =  v.map {
+                Reflection($0).parse()
+            }
+            element = .list(elements)
         default: break
         }
 
@@ -120,6 +139,11 @@ extension Reflection {
                 element = .string(v)
             case let v as Bool:
                 element = .bool(v)
+            case let v as Dictionary<AnyHashable, Any>:
+                let elements =  v.map {
+                    (Reflection($0.key).parse(), Reflection($0.value).parse())
+                }
+                element = .dict(elements)
             case let v as Array<Any>:
                 let elements =  v.map {
                     Reflection($0).parse()
