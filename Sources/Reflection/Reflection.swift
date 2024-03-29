@@ -142,7 +142,11 @@ extension Reflection {
         }
 
         if let element {
-            return .typed(type: type, element: element)
+            if omitRootType {
+                return element
+            } else {
+                return .typed(type: type, element: element)
+            }
         }
 
         var nestedElements: [Element] = []
