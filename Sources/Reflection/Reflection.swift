@@ -31,6 +31,10 @@ extension Reflection: CustomStringConvertible {
     public var description: String {
         structured.description
     }
+
+    public var typeDescription: String {
+        structured.typeDescription
+    }
 }
 
 extension Reflection {
@@ -165,6 +169,29 @@ extension Reflection {
                 type: type,
                 element: .nested(nestedElements)
             )
+        }
+    }
+}
+
+extension Reflection.Element {
+    public var typeDescription: String {
+        switch self {
+        case let .nested(elements):
+            if elements.isEmpty { return "{}" }
+            return """
+            {
+            \(elements.map({ $0.typeDescription.tabbed(tabWidth) }).joined(separator: "\n"))
+            }
+            """
+
+        case let .typed(type, element):
+            return "\(type) \(element.typeDescription)"
+
+        case let .keyed(key, element):
+            return "\(key): \(element.typeDescription)"
+
+        default:
+            return ""
         }
     }
 }

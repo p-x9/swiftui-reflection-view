@@ -14,14 +14,22 @@ struct NestedContent: View {
     let type: String?
     let key: String?
     let elements: [Reflection.Element]
+    let showTypeInfoOnly: Bool
 
     @State var isExpanded = false
     @Environment(\.reflectionViewConfig) var config
 
-    init(type: String?, key: String?, _ elements: [Reflection.Element], isExpanded: Bool = false) {
+    init(
+        type: String?,
+        key: String?,
+        _ elements: [Reflection.Element],
+        showTypeInfoOnly: Bool = false,
+        isExpanded: Bool = false
+    ) {
         self.type = type
         self.key = key
         self.elements = elements
+        self.showTypeInfoOnly = showTypeInfoOnly
         self._isExpanded = .init(initialValue: isExpanded)
     }
 
@@ -64,9 +72,15 @@ struct NestedContent: View {
     var elementsView: some View {
         VStack {
             ForEach(elements.indices, id: \.self) { index in
-                ReflectionContentView(elements[index])
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 16)
+                if showTypeInfoOnly{
+                    TypeInfoContentView(elements[index])
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
+                } else {
+                    ReflectionContentView(elements[index])
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
+                }
             }
         }
     }
