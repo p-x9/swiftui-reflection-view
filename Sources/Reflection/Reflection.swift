@@ -10,16 +10,20 @@ import Foundation
 import MagicMirror
 
 public  struct Reflection {
-    public let value: Any
-    public let mirror: MagicMirror
+    public let value: Any?
+    public let mirror: MagicMirror?
 
     public var structured: Element {
         parse()
     }
 
-    public init(_ value: Any) {
+    public init(_ value: Any?) {
         self.value = value
-        self.mirror = .init(reflecting: value)
+        if let value {
+            self.mirror = .init(reflecting: value)
+        } else {
+            self.mirror = nil
+        }
     }
 }
 
@@ -31,6 +35,7 @@ extension Reflection: CustomStringConvertible {
 
 extension Reflection {
     public indirect enum Element {
+        case `nil`
         case string(String)
         case hex(any FixedWidthInteger)
         case number(any Numeric)
@@ -50,6 +55,9 @@ extension Reflection.Element: CustomStringConvertible {
 
     public var description: String {
         switch self {
+        case .nil:
+            return "nil"
+
         case let .string(v):
             return "\"\(v)\""
 
@@ -96,11 +104,22 @@ extension Reflection.Element: CustomStringConvertible {
 }
 
 extension Reflection {
-    private func parse() -> Element {
+    private func parse(omitRootType: Bool = false) -> Element {
+        guard let mirror,
+              let value else {
+            return .nil
+        }
+
         let type = "\(mirror.subjectType)"
         var element: Element?
 
         switch value {
+        case let v as Optional<Any> where type.starts(with: "Optional<"):
+            if case let .some(wrapped) = v {
+                element = Reflection(wrapped).parse(omitRootType: true)
+            } else {
+                element = .nil
+            }
         case let v as any FixedWidthInteger:
             element = .hex(v)
         case let v as any Numeric:
@@ -129,39 +148,19 @@ extension Reflection {
         var nestedElements: [Element] = []
 
         for case let (key?, value) in mirror.children {
-            let element: Element
-            switch value {
-            case let v as any FixedWidthInteger:
-                element = .hex(v)
-            case let v as any Numeric:
-                element = .number(v)
-            case let v as String:
-                element = .string(v)
-            case let v as Bool:
-                element = .bool(v)
-            case let v as Dictionary<AnyHashable, Any>:
-                let elements =  v.map {
-                    (Reflection($0.key).parse(), Reflection($0.value).parse())
-                }
-                element = .dict(elements)
-            case let v as Array<Any>:
-                let elements =  v.map {
-                    Reflection($0).parse()
-                }
-                element = .list(elements)
-            default:
-                let reflection = Reflection(value)
-                element = reflection.parse()
-            }
-
+            let element = Reflection(value).parse()
             nestedElements.append(
                 .keyed(key: key, element: element)
             )
         }
 
-        return .typed(
-            type: type,
-            element: .nested(nestedElements)
-        )
+        if omitRootType {
+            return .nested(nestedElements)
+        } else {
+            return .typed(
+                type: type,
+                element: .nested(nestedElements)
+            )
+        }
     }
 }

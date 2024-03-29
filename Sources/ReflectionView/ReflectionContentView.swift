@@ -23,6 +23,10 @@ struct ReflectionContentView: View {
 
     var body: some View {
         switch element {
+        case .nil:
+            Text("nil")
+                .foregroundColor(config.keywordColor)
+
         case let .string(v):
             Text("\"\(v)\"")
                 .foregroundColor(config.stringColor)
