@@ -3,7 +3,7 @@
 //
 //
 //  Created by p-x9 on 2024/03/15.
-//  
+//
 //
 
 import Foundation
@@ -34,7 +34,7 @@ struct ListContent: View {
     }
 
     var body: some View {
-        if elements.isEmpty {
+        if elements.isEmpty || !(showTypeInfoOnly && elements.canShowChildTypeInfo) {
             emptyView
         } else {
             VStack {
@@ -71,7 +71,6 @@ struct ListContent: View {
     @ViewBuilder
     var elementsView: some View {
         if showTypeInfoOnly,
-           elements.isSameType,
            let element = elements.first {
             TypeInfoContentView(element)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,8 +105,16 @@ struct ListContent: View {
                 Text("\(type)")
                     .foregroundColor(config.typeColor)
             }
-            Text("[]")
-                .foregroundColor(.universal(.systemGray))
+            if !showTypeInfoOnly {
+                Text("[]")
+                    .foregroundColor(.universal(.systemGray))
+            }
         }
+    }
+}
+
+extension [Reflection.Element] {
+    fileprivate var canShowChildTypeInfo: Bool {
+        isSameType
     }
 }
