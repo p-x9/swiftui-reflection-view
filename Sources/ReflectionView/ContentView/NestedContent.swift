@@ -40,10 +40,10 @@ struct NestedContent: View {
             VStack {
                 HStack(spacing: 2) {
                     if let key {
-                        Text("\(key): ")
+                        Text("\(key):")
                     }
                     if let type {
-                        Text("\(type) ")
+                        Text("\(type)")
                             .foregroundColor(config.typeColor)
                     }
                     leftBrace
@@ -96,9 +96,13 @@ struct NestedContent: View {
     }
 
     var emptyView: some View {
-        HStack {
+        HStack(spacing: 0) {
             if let key {
-                Text(key)
+                Text("\(key): ")
+            }
+            if let type {
+                Text("\(type) ")
+                    .foregroundColor(config.typeColor)
             }
             Text("{}")
                 .foregroundColor(.universal(.systemGray))

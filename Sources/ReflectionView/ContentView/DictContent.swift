@@ -14,6 +14,7 @@ struct DictContent: View {
     let type: String?
     let key: String?
     let elements: [(key: Reflection.Element, value: Reflection.Element)]
+    let showTypeInfoOnly: Bool
 
     @State var isExpanded = false
     @Environment(\.reflectionViewConfig) var config
@@ -22,11 +23,13 @@ struct DictContent: View {
         type: String?,
         key: String?,
         _ elements: [(Reflection.Element, Reflection.Element)],
+        showTypeInfoOnly: Bool = false,
         isExpanded: Bool = false
     ) {
         self.type = type
         self.key = key
         self.elements = elements
+        self.showTypeInfoOnly = showTypeInfoOnly
         self._isExpanded = .init(initialValue: isExpanded)
     }
 
@@ -37,10 +40,10 @@ struct DictContent: View {
             VStack {
                 HStack(spacing: 2) {
                     if let key {
-                        Text(key)
+                        Text("\(key):")
                     }
                     if let type {
-                        Text("\(type) ")
+                        Text("\(type)")
                             .foregroundColor(config.typeColor)
                     }
                     leftSquare
@@ -65,20 +68,40 @@ struct DictContent: View {
         }
     }
 
+    @ViewBuilder
     var elementsView: some View {
-        VStack {
-            ForEach(elements.indices, id: \.self) { index in
-                VStack {
-                    HStack(spacing: 0) {
-                        ReflectionContentView(elements[index].key)
-                            .padding(.leading, 16)
-                        colon
-                        Spacer()
-                    }
+        let keys = elements.map(\.key)
+        let values = elements.map(\.value)
+        if showTypeInfoOnly,
+           keys.isSameType, values.isSameType,
+           let key = keys.first, let value = values.first {
+            VStack {
+                HStack(spacing: 0) {
+                    TypeInfoContentView(key)
+                        .padding(.leading, 16)
+                    colon
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                TypeInfoContentView(value)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    ReflectionContentView(elements[index].value)
+                    .padding(.leading, 32)
+            }
+        } else {
+            VStack {
+                ForEach(elements.indices, id: \.self) { index in
+                    VStack {
+                        HStack(spacing: 0) {
+                            ReflectionContentView(elements[index].key)
+                                .padding(.leading, 16)
+                            colon
+                            Spacer()
+                        }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 32)
+                        ReflectionContentView(elements[index].value)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 32)
+                    }
                 }
             }
         }
@@ -100,9 +123,13 @@ struct DictContent: View {
     }
 
     var emptyView: some View {
-        HStack {
+        HStack(spacing: 0) {
             if let key {
-                Text(key)
+                Text("\(key):")
+            }
+            if let type {
+                Text(type)
+                    .foregroundColor(config.typeColor)
             }
             Text("[:]")
                 .foregroundColor(.universal(.systemGray))

@@ -100,6 +100,22 @@ struct ReflectionContentView: View {
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
+        case let .keyed(key, element: .typed(type, .list(elements))):
+            ListContent(
+                type: type,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .typed(type, .dict(elements))):
+            DictContent(
+                type: type,
+                key: key,
+                elements,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
         case let .typed(type, element: .nested(elements)):
             NestedContent(
                 type: type,

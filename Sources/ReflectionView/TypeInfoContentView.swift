@@ -24,10 +24,46 @@ struct TypeInfoContentView: View {
 
     var body: some View {
         switch element {
+        case let .list(elements):
+            ListContent(
+                type: nil,
+                key: nil,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .dict(elements):
+            DictContent(
+                type: nil,
+                key: nil,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
         case let .nested(elements):
             NestedContent(
                 type: nil,
                 key: nil,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .list(elements)):
+            ListContent(
+                type: nil,
+                key: key,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .dict(elements)):
+            DictContent(
+                type: nil,
+                key: key,
                 elements,
                 showTypeInfoOnly: true,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -51,8 +87,44 @@ struct TypeInfoContentView: View {
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
+        case let .keyed(key, element: .typed(type, .list(elements))):
+            ListContent(
+                type: type,
+                key: key,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .typed(type, .dict(elements))):
+            DictContent(
+                type: type,
+                key: key,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
         case let .typed(type, element: .nested(elements)):
             NestedContent(
+                type: type,
+                key: nil,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .typed(type, element: .list(elements)):
+            ListContent(
+                type: type,
+                key: nil,
+                elements,
+                showTypeInfoOnly: true,
+                isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .typed(type, element: .dict(elements)):
+            DictContent(
                 type: type,
                 key: nil,
                 elements,
