@@ -123,7 +123,7 @@ struct DictContent: View {
     }
 
     var emptyView: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 2) {
             if let key {
                 Text("\(key):")
             }

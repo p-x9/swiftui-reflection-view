@@ -96,12 +96,12 @@ struct NestedContent: View {
     }
 
     var emptyView: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 2) {
             if let key {
-                Text("\(key): ")
+                Text("\(key):")
             }
             if let type {
-                Text("\(type) ")
+                Text("\(type)")
                     .foregroundColor(config.typeColor)
             }
             Text("{}")
