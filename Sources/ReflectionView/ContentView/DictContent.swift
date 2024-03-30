@@ -34,7 +34,7 @@ struct DictContent: View {
     }
 
     var body: some View {
-        if elements.isEmpty {
+        if elements.isEmpty || !(showTypeInfoOnly && elements.canShowChildTypeInfo) {
             emptyView
         } else {
             VStack {
@@ -73,7 +73,6 @@ struct DictContent: View {
         let keys = elements.map(\.key)
         let values = elements.map(\.value)
         if showTypeInfoOnly,
-           keys.isSameType, values.isSameType,
            let key = keys.first, let value = values.first {
             VStack {
                 HStack(spacing: 0) {
@@ -131,8 +130,19 @@ struct DictContent: View {
                 Text(type)
                     .foregroundColor(config.typeColor)
             }
-            Text("[:]")
-                .foregroundColor(.universal(.systemGray))
+            if !showTypeInfoOnly {
+                Text("[:]")
+                    .foregroundColor(.universal(.systemGray))
+            }
         }
+    }
+}
+
+extension [(key: Reflection.Element, value: Reflection.Element)] {
+    fileprivate var canShowChildTypeInfo: Bool {
+        guard !isEmpty else { return false }
+        let keys = map(\.key)
+        let values = map(\.value)
+        return keys.isSameType && values.isSameType
     }
 }
