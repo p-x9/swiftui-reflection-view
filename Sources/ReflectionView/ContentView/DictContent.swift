@@ -52,7 +52,7 @@ struct DictContent: View {
                             .background(Color.universal(.systemGray).opacity(0.3))
                             .cornerRadius(3.0)
                         rightSquare
-                        ItemCountLabel(elements.count)
+                        ItemCountLabel(showTypeInfoOnly ? 1 : elements.count)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
