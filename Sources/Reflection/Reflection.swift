@@ -195,3 +195,14 @@ extension Reflection.Element {
         }
     }
 }
+
+extension Sequence where Element == Reflection.Element {
+    public var isSameType: Bool {
+        guard let root = first(where: { _ in true }) else {
+            return true
+        }
+        return allSatisfy {
+            $0.typeDescription == root.typeDescription
+        }
+    }
+}
