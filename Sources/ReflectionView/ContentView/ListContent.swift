@@ -34,7 +34,7 @@ struct ListContent: View {
     }
 
     var body: some View {
-        if elements.isEmpty || !(showTypeInfoOnly && elements.canShowChildTypeInfo) {
+        if elements.isEmpty || (showTypeInfoOnly && !elements.canShowChildTypeInfo) {
             emptyView
         } else {
             VStack {
