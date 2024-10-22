@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/p-x9/SwiftUIColor.git",
       "state" : {
-        "revision" : "aa42f452698cc0f78dcba2c6544f4abf7724602f",
-        "version" : "0.4.0"
+        "revision" : "cfea559bcbd681899a8b815e8e84eaadd8be8c2e",
+        "version" : "0.6.0"
       }
     }
   ],
