@@ -74,6 +74,38 @@ extension String {
         return prefix + "[" + content + "]" + suffix
     }
 
+    package var replacedToDictionarySyntaxSugar: String {
+        guard let range = range(of: "Dictionary<") else { return self }
+        let prefix = self[startIndex ..< range.lowerBound]
+        let trailing = String(self[index(before: range.upperBound)...])
+
+        guard let closingIndex = trailing.indexForMatchingBracket(open: "<", close: ">") else {
+            return self
+        }
+
+        let startInex = trailing.index(trailing.startIndex, offsetBy: 1)
+        let endIndex = trailing.index(trailing.startIndex, offsetBy: closingIndex)
+        let content = String(trailing[startInex ..< endIndex]) // <content>
+
+        let keyAndValue = content.contents(
+            separatedBy: ",",
+            openings: ["(", "<", "["],
+            closings: [")", ">", "]"]
+        )
+        guard keyAndValue.count == 2 else { return self }
+        let key = keyAndValue[0]
+            .replacedToDictionarySyntaxSugar
+            .trimmedLeadingAndTrailingWhitespaces
+        let value = keyAndValue[1]
+            .replacedToDictionarySyntaxSugar
+            .trimmedLeadingAndTrailingWhitespaces
+
+        let suffix = String(trailing[trailing.index(after: endIndex)...])
+            .replacedToDictionarySyntaxSugar
+            .trimmedLeadingAndTrailingWhitespaces
+
+        return prefix + "[" + key + ": " + value + "]" + suffix
+    }
 }
 
 extension String {
