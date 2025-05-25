@@ -15,3 +15,16 @@ extension String {
             .joined(separator: "\n")
     }
 }
+
+extension String {
+    package var strippedSwiftModulePrefix: String {
+        var string = self
+        if string.starts(with: "Swift.") {
+            string = String(string.dropFirst(6))
+        }
+        return string
+            .replacingOccurrences(of: "<Swift.", with: "<")
+            .replacingOccurrences(of: "(Swift.", with: "(")
+            .replacingOccurrences(of: ", Swift.", with: ", ")
+    }
+}
