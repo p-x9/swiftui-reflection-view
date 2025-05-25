@@ -45,6 +45,8 @@ extension Reflection {
         case number(any Numeric)
         case bool(Bool)
 
+        case type(Any.Type)
+
         case list([Element])
         case dict([(Element, Element)])
         case nested([Element])
@@ -73,6 +75,9 @@ extension Reflection.Element: CustomStringConvertible {
 
         case let .bool(v):
             return "\(v)"
+
+        case let .type(type):
+            return String(reflecting: type).strippedSwiftModulePrefix + ".self"
 
         case let .list(elements):
             if elements.isEmpty { return "[]" }
@@ -114,7 +119,9 @@ extension Reflection {
             return .nil
         }
 
-        let type = "\(mirror.subjectType)"
+        let type: String = .init(reflecting: mirror.subjectType)
+            .strippedSwiftModulePrefix
+
         var element: Element?
 
         switch value {
@@ -142,6 +149,8 @@ extension Reflection {
                 Reflection($0).parse()
             }
             element = .list(elements)
+        case let v as Any.Type:
+            element = .type(v)
         default: break
         }
 

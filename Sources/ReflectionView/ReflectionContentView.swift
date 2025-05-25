@@ -44,6 +44,15 @@ struct ReflectionContentView: View {
             Text(v.description)
                 .foregroundColor(config.keywordColor)
 
+        case let .type(v):
+            HStack(spacing: 0) {
+                Text(String(reflecting: v).strippedSwiftModulePrefix)
+                    .foregroundColor(config.typeColor)
+                Text(".")
+                Text("self")
+                    .foregroundColor(config.keywordColor)
+            }
+
         case let .list(elements):
             ListContent(
                 type: nil,
