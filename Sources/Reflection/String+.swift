@@ -30,6 +30,15 @@ extension String {
 }
 
 extension String {
+    package var replacedToCommonSyntaxSugar: String {
+        self.replacedToOptionalSyntaxSugar
+            .replacedToArraySyntaxSugar
+            .replacedToDictionarySyntaxSugar
+            .trimmedLeadingAndTrailingWhitespaces
+    }
+}
+
+extension String {
     package var replacedToOptionalSyntaxSugar: String {
         guard let range = range(of: "Optional<") else { return self }
         let prefix = self[startIndex ..< range.lowerBound]

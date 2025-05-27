@@ -46,7 +46,7 @@ struct ReflectionContentView: View {
 
         case let .type(v):
             HStack(spacing: 0) {
-                Text(String(reflecting: v).strippedSwiftModulePrefix)
+                Text(String(reflecting: v).strippedSwiftModulePrefix.replacedToCommonSyntaxSugar)
                     .foregroundColor(config.typeColor)
                 Text(".")
                 Text("self")

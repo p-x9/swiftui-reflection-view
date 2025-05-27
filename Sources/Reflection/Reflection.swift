@@ -77,7 +77,7 @@ extension Reflection.Element: CustomStringConvertible {
             return "\(v)"
 
         case let .type(type):
-            return String(reflecting: type).strippedSwiftModulePrefix + ".self"
+            return String(reflecting: type).strippedSwiftModulePrefix.replacedToCommonSyntaxSugar + ".self"
 
         case let .list(elements):
             if elements.isEmpty { return "[]" }
@@ -121,11 +121,12 @@ extension Reflection {
 
         let type: String = .init(reflecting: mirror.subjectType)
             .strippedSwiftModulePrefix
+            .replacedToCommonSyntaxSugar
 
         var element: Element?
 
         switch value {
-        case let v as Optional<Any> where type.starts(with: "Optional<"):
+        case let v as Optional<Any> where type.hasSuffix("?"):
             if case let .some(wrapped) = v {
                 element = Reflection(wrapped).parse(omitRootType: true)
             } else {
