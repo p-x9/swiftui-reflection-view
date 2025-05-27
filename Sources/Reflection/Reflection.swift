@@ -51,7 +51,7 @@ extension Reflection {
         case dict([(Element, Element)])
         case nested([Element])
 
-        case typed(type: String, element: Element)
+        case typed(type: Any.Type, element: Element)
         case keyed(key: String, element: Element)
     }
 }
@@ -104,7 +104,7 @@ extension Reflection.Element: CustomStringConvertible {
             """
 
         case let .typed(type, element):
-            return "<\(type)> \(element)"
+            return "<\(shorthandName(of: type))> \(element)"
 
         case let .keyed(key, element):
             return "\(key): \(element)"
@@ -119,14 +119,13 @@ extension Reflection {
             return .nil
         }
 
-        let type: String = .init(reflecting: mirror.subjectType)
-            .strippedSwiftModulePrefix
-            .replacedToCommonSyntaxSugar
+        let type = mirror.subjectType
+        let typeName: String = name(of: type)
 
         var element: Element?
 
         switch value {
-        case let v as Optional<Any> where type.hasSuffix("?"):
+        case let v as Optional<Any> where typeName.hasPrefix("Optional<"):
             if case let .some(wrapped) = v {
                 element = Reflection(wrapped).parse(omitRootType: true)
             } else {
@@ -195,7 +194,7 @@ extension Reflection.Element {
             """
 
         case let .typed(type, element):
-            return "\(type) \(element.typeDescription)"
+            return "\(shorthandName(of: type)) \(element.typeDescription)"
 
         case let .keyed(key, element):
             return "\(key): \(element.typeDescription)"
@@ -215,4 +214,14 @@ extension Sequence where Element == Reflection.Element {
             $0.typeDescription == root.typeDescription
         }
     }
+}
+
+package func name(of type: Any.Type) -> String {
+    String(reflecting: type)
+        .strippedSwiftModulePrefix
+}
+
+package func shorthandName(of type: Any.Type) -> String {
+    name(of: type)
+        .replacedToCommonSyntaxSugar
 }

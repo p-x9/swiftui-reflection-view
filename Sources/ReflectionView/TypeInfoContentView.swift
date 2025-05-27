@@ -80,7 +80,7 @@ struct TypeInfoContentView: View {
 
         case let .keyed(key, element: .typed(type, .nested(elements))):
             NestedContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: key,
                 elements,
                 showTypeInfoOnly: true,
@@ -89,7 +89,7 @@ struct TypeInfoContentView: View {
 
         case let .keyed(key, element: .typed(type, .list(elements))):
             ListContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: key,
                 elements,
                 showTypeInfoOnly: true,
@@ -98,7 +98,7 @@ struct TypeInfoContentView: View {
 
         case let .keyed(key, element: .typed(type, .dict(elements))):
             DictContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: key,
                 elements,
                 showTypeInfoOnly: true,
@@ -107,7 +107,7 @@ struct TypeInfoContentView: View {
 
         case let .typed(type, element: .nested(elements)):
             NestedContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: nil,
                 elements,
                 showTypeInfoOnly: true,
@@ -116,7 +116,7 @@ struct TypeInfoContentView: View {
 
         case let .typed(type, element: .list(elements)):
             ListContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: nil,
                 elements,
                 showTypeInfoOnly: true,
@@ -125,7 +125,7 @@ struct TypeInfoContentView: View {
 
         case let .typed(type, element: .dict(elements)):
             DictContent(
-                type: type,
+                type: shorthandName(of: type),
                 key: nil,
                 elements,
                 showTypeInfoOnly: true,
@@ -133,7 +133,7 @@ struct TypeInfoContentView: View {
             )
 
         case let .typed(type, element):
-            TypedContent(type) {
+            TypedContent(shorthandName(of: type)) {
                 TypeInfoContentView(element)
             }
 
