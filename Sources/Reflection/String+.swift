@@ -48,9 +48,9 @@ extension String {
             return self
         }
 
-        let startInex = trailing.index(trailing.startIndex, offsetBy: 1)
+        let startIndex = trailing.index(trailing.startIndex, offsetBy: 1)
         let endIndex = trailing.index(trailing.startIndex, offsetBy: closingIndex)
-        let content = String(trailing[startInex ..< endIndex]) // <content>
+        let content = String(trailing[startIndex ..< endIndex]) // <content>
             .replacedToOptionalSyntaxSugar
             .trimmedLeadingAndTrailingWhitespaces
 
@@ -70,9 +70,9 @@ extension String {
             return self
         }
 
-        let startInex = trailing.index(trailing.startIndex, offsetBy: 1)
+        let startIndex = trailing.index(trailing.startIndex, offsetBy: 1)
         let endIndex = trailing.index(trailing.startIndex, offsetBy: closingIndex)
-        let content = String(trailing[startInex ..< endIndex]) // <content>
+        let content = String(trailing[startIndex ..< endIndex]) // <content>
             .replacedToArraySyntaxSugar
             .trimmedLeadingAndTrailingWhitespaces
 
@@ -92,9 +92,9 @@ extension String {
             return self
         }
 
-        let startInex = trailing.index(trailing.startIndex, offsetBy: 1)
+        let startIndex = trailing.index(trailing.startIndex, offsetBy: 1)
         let endIndex = trailing.index(trailing.startIndex, offsetBy: closingIndex)
-        let content = String(trailing[startInex ..< endIndex]) // <content>
+        let content = String(trailing[startIndex ..< endIndex]) // <content>
 
         let keyAndValue = content.contents(
             separatedBy: ",",
