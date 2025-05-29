@@ -141,7 +141,7 @@ extension Reflection {
             element = .bool(v)
         case let v as Dictionary<AnyHashable, Any>:
             let elements =  v.map {
-                (Reflection($0.key).parse(), Reflection($0.value).parse())
+                (Reflection($0.key.base).parse(), Reflection($0.value).parse())
             }
             element = .dict(elements)
         case let v as Array<Any>:
