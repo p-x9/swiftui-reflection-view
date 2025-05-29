@@ -151,6 +151,8 @@ extension Reflection {
             element = .list(elements)
         case let v as Any.Type:
             element = .type(v)
+        case let v as NSNumber:
+            element = .number(v.decimalValue)
         default: break
         }
 
