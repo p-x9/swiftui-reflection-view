@@ -15,7 +15,7 @@ public struct ReflectionView: View {
     public var body: some View {
         let structured = reflection.structured
         HStack {
-            ReflectionContentView(structured)
+            ReflectionContentView(structured, isRoot: true)
         }
         .padding()
     }

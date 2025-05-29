@@ -12,13 +12,15 @@ import Reflection
 
 struct ReflectionContentView: View {
     let element: Reflection.Element
+    let isRoot: Bool
     @Environment(\.reflectionViewConfig) var config
 
     @Environment(\.reflectionViewConfig.itemLimitForExpansion)
     var itemLimitForExpansion
 
-    init(_ element: Reflection.Element) {
+    init(_ element: Reflection.Element, isRoot: Bool = false) {
         self.element = element
+        self.isRoot = isRoot
     }
 
     var body: some View {
@@ -46,7 +48,7 @@ struct ReflectionContentView: View {
 
         case let .type(v):
             HStack(spacing: 0) {
-                Text(String(reflecting: v).strippedSwiftModulePrefix)
+                Text(typeName(of: v))
                     .foregroundColor(config.typeColor)
                 Text(".")
                 Text("self")
@@ -103,7 +105,7 @@ struct ReflectionContentView: View {
 
         case let .keyed(key, element: .typed(type, .nested(elements))):
             NestedContent(
-                type: type,
+                type: typeName(of: type),
                 key: key,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -111,7 +113,7 @@ struct ReflectionContentView: View {
 
         case let .keyed(key, element: .typed(type, .list(elements))):
             ListContent(
-                type: type,
+                type: typeName(of: type),
                 key: key,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -119,7 +121,7 @@ struct ReflectionContentView: View {
 
         case let .keyed(key, element: .typed(type, .dict(elements))):
             DictContent(
-                type: type,
+                type: typeName(of: type),
                 key: key,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -127,7 +129,7 @@ struct ReflectionContentView: View {
 
         case let .typed(type, element: .nested(elements)):
             NestedContent(
-                type: type,
+                type: typeName(of: type),
                 key: nil,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -135,7 +137,7 @@ struct ReflectionContentView: View {
 
         case let .typed(type, element: .list(elements)):
             ListContent(
-                type: type,
+                type: typeName(of: type),
                 key: nil,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
@@ -143,14 +145,14 @@ struct ReflectionContentView: View {
 
         case let .typed(type, element: .dict(elements)):
             DictContent(
-                type: type,
+                type: typeName(of: type),
                 key: nil,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
         case let .typed(type, element):
-            TypedContent(type) {
+            TypedContent(typeName(of: type)) {
                 ReflectionContentView(element)
             }
 
@@ -158,6 +160,17 @@ struct ReflectionContentView: View {
             KeyedContent(key) {
                 ReflectionContentView(element)
             }
+        }
+    }
+}
+
+extension ReflectionContentView {
+    func typeName(of type: Any.Type) -> String {
+        if isRoot {
+            name(of: type)
+                .replacedToOptionalSyntaxSugar
+        } else {
+            shorthandName(of: type)
         }
     }
 }
