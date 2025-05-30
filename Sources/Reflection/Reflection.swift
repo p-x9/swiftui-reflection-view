@@ -80,7 +80,7 @@ extension Reflection.Element: CustomStringConvertible {
             return "\(v)"
 
         case let .type(type):
-            return String(reflecting: type).strippedSwiftModulePrefix.replacedToCommonSyntaxSugar + ".self"
+            return String(reflecting: type).strippedSwiftModulePrefix.strippedCModulePrefix.replacedToCommonSyntaxSugar + ".self"
 
         case let .list(elements):
             if elements.isEmpty { return "[]" }
@@ -279,6 +279,7 @@ extension Sequence where Element == Reflection.Element {
 package func name(of type: Any.Type) -> String {
     String(reflecting: type)
         .strippedSwiftModulePrefix
+        .strippedCModulePrefix
 }
 
 package func shorthandName(of type: Any.Type) -> String {

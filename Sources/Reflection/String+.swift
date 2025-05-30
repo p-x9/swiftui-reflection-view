@@ -27,6 +27,17 @@ extension String {
             .replacingOccurrences(of: "(Swift.", with: "(")
             .replacingOccurrences(of: ", Swift.", with: ", ")
     }
+
+    package var strippedCModulePrefix: String {
+        var string = self
+        if string.starts(with: "__C.") {
+            string = String(string.dropFirst(4))
+        }
+        return string
+            .replacingOccurrences(of: "<__C.", with: "<")
+            .replacingOccurrences(of: "(__C.", with: "(")
+            .replacingOccurrences(of: ", __C.", with: ", ")
+    }
 }
 
 extension String {
