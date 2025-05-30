@@ -14,6 +14,7 @@ public struct Config {
     public var stringColor: Color
     public var numberColor: Color
     public var typeColor: Color
+    public var constantColor: Color
     public var itemLimitForExpansion = 5
 
     public init(
@@ -21,12 +22,15 @@ public struct Config {
         stringColor: Color,
         numberColor: Color,
         typeColor: Color,
+        constantColor: Color,
         itemLimitForExpansion: Int = 5
     ) {
         self.keywordColor = keywordColor
         self.stringColor = stringColor
         self.numberColor = numberColor
         self.typeColor = typeColor
+        self.constantColor = constantColor
+        self.itemLimitForExpansion = itemLimitForExpansion
     }
 }
 
@@ -36,7 +40,8 @@ extension Config {
             keywordColor: .init("default/keyword", bundle: .module),
             stringColor: .init("default/string", bundle: .module),
             numberColor: .init("default/number", bundle: .module),
-            typeColor: .init("default/type", bundle: .module)
+            typeColor: .init("default/type", bundle: .module),
+            constantColor: .init("default/constant", bundle: .module)
         )
     }
 }

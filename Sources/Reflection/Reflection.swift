@@ -49,6 +49,9 @@ extension Reflection {
 
         case list([Element])
         case dict([(Element, Element)])
+
+        case enumCase(String, [Element])
+
         case nested([Element])
 
         case typed(type: Any.Type, element: Element)
@@ -93,6 +96,17 @@ extension Reflection.Element: CustomStringConvertible {
             [
             \(elements.map({ $0.0.description.tabbed(tabWidth) + ":\n" + $0.1.description.tabbed(2 * tabWidth) }).joined(separator: "\n"))
             ]
+            """
+
+        case let .enumCase(label, values):
+            if values.isEmpty { return ".\(label)" }
+            if canDisplayOneline {
+                return ".\(label)(\(values.map(\.description).joined(separator: ", ")))"
+            }
+            return """
+            .\(label)(
+            \(values.map({ $0.description.tabbed(tabWidth) }).joined(separator: "\n"))
+            )
             """
 
         case let .nested(elements):
@@ -164,6 +178,36 @@ extension Reflection {
             }
         }
 
+        if mirror.displayStyle == .enum {
+            let enumCase: Element = {
+                if let (label, tuple) = mirror.children.first {
+                    let mirror = MagicMirror(reflecting: tuple)
+                    if mirror.displayStyle == .tuple {
+                        let values: [Element] = mirror
+                            .children
+                            .map {
+                                let element = Reflection($0.value).parse()
+                                if let label = $0.label {
+                                    return .keyed(key: label, element: element)
+                                }
+                                return element
+                            }
+                        return .enumCase(label ?? "", values)
+                    } else {
+                        return .enumCase(label ?? "", [Reflection(tuple).parse()])
+                    }
+                } else {
+                    return .enumCase("\(value)", [])
+                }
+            }()
+
+            if omitRootType {
+                return enumCase
+            } else {
+                return .typed(type: type, element: enumCase)
+            }
+        }
+
         var nestedElements: [Element] = []
 
         for case let (key?, value) in mirror.children {
@@ -203,6 +247,20 @@ extension Reflection.Element {
 
         default:
             return ""
+        }
+    }
+}
+
+extension Reflection.Element {
+    package var canDisplayOneline: Bool {
+        switch self {
+        case let .list(elements): elements.isEmpty
+        case let .dict(pairs): pairs.isEmpty
+        case let .enumCase(_, values): values.allSatisfy(\.canDisplayOneline)
+        case let .nested(elements): elements.isEmpty
+        case let .typed(type: _, element: element): element.canDisplayOneline
+        case let .keyed(key: _, element: element): element.canDisplayOneline
+        default: true
         }
     }
 }

@@ -71,6 +71,16 @@ struct ReflectionContentView: View {
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
+        case let .enumCase(name, values):
+            EnumCaseContent(
+                type: nil,
+                key: nil,
+                name: name,
+                values,
+                canDisplayOneline: element.canDisplayOneline,
+                isExpanded: values.count <= itemLimitForExpansion
+            )
+
         case let .nested(elements):
             NestedContent(
                 type: nil,
@@ -93,6 +103,16 @@ struct ReflectionContentView: View {
                 key: key,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .keyed(key, element: .enumCase(name, values)):
+            EnumCaseContent(
+                type: nil,
+                key: key,
+                name: name,
+                values,
+                canDisplayOneline: element.canDisplayOneline,
+                isExpanded: values.count <= itemLimitForExpansion
             )
 
         case let .keyed(key, element: .nested(elements)):
@@ -127,6 +147,16 @@ struct ReflectionContentView: View {
                 isExpanded: elements.count <= itemLimitForExpansion
             )
 
+        case let .keyed(key, element: .typed(type, .enumCase(name, values))):
+            EnumCaseContent(
+                type: typeName(of: type),
+                key: key,
+                name: name,
+                values,
+                canDisplayOneline: element.canDisplayOneline,
+                isExpanded: values.count <= itemLimitForExpansion
+            )
+
         case let .typed(type, element: .nested(elements)):
             NestedContent(
                 type: typeName(of: type),
@@ -149,6 +179,16 @@ struct ReflectionContentView: View {
                 key: nil,
                 elements,
                 isExpanded: elements.count <= itemLimitForExpansion
+            )
+
+        case let .typed(type, element: .enumCase(name, values)):
+            EnumCaseContent(
+                type: typeName(of: type),
+                key: nil,
+                name: name,
+                values,
+                canDisplayOneline: element.canDisplayOneline,
+                isExpanded: values.count <= itemLimitForExpansion
             )
 
         case let .typed(type, element):
