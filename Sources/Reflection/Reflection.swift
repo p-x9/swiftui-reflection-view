@@ -141,7 +141,11 @@ extension Reflection {
         switch value {
         case let v as Optional<Any> where typeName.hasPrefix("Optional<"):
             if case let .some(wrapped) = v {
-                element = Reflection(wrapped).parse(omitRootType: true)
+                let element = Reflection(wrapped).parse()
+                if case let.typed(type, element) = element {
+                    return .typed(type: optionalType(of: type), element: element)
+                }
+                return element
             } else {
                 element = .nil
             }
