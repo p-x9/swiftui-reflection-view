@@ -15,3 +15,6 @@ func optionalType(of type: Any.Type) -> Any.Type {
 func _optionalType<T>(_ type: T.Type) -> Any.Type {
     Optional<T>.self
 }
+
+@_silgen_name("swift_EnumCaseName")
+func _getEnumCaseName<T>(_ value: T) -> UnsafePointer<CChar>?
