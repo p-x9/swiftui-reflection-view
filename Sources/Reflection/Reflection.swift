@@ -201,6 +201,9 @@ extension Reflection {
                         return .enumCase(label ?? "", [Reflection(tuple).parse()])
                     }
                 } else {
+                    if let caseName = _openExistential(value, do: _getEnumCaseName(_:)) {
+                        return .enumCase(String(cString: caseName), [])
+                    }
                     return .enumCase("\(value)", [])
                 }
             }()
