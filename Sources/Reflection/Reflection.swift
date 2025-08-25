@@ -217,7 +217,7 @@ extension Reflection {
 
         var nestedElements: [Element] = []
 
-        for case let (key?, value) in mirror.children {
+        for case let (key?, value) in mirror.recursiveChildren {
             let element = Reflection(value).parse()
             nestedElements.append(
                 .keyed(key: key, element: element)
